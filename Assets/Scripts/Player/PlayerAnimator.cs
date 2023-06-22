@@ -7,6 +7,7 @@ namespace TarodevController {
     /// You won't find any programming prowess here.
     /// This is a supplementary script to help with effects and animation. Basically a juice factory.
     /// </summary>
+    
     public class PlayerAnimator : MonoBehaviour {
         [SerializeField] private Animator _anim;
         [SerializeField] private AudioSource _source;
@@ -29,6 +30,12 @@ namespace TarodevController {
         void Update() {
             if (_player == null) return;
 
+            // Kick
+            if (_player.KickingThisFrame)
+            {
+                _anim.SetTrigger(KickKey);
+            }
+            
             // Flip the sprite
             if (_player.Input.X != 0) transform.localScale = new Vector3(_player.Input.X > 0 ? 1 : -1, 1, 1);
 
@@ -44,10 +51,9 @@ namespace TarodevController {
                 _anim.SetTrigger(GroundedKey);
                 _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
             }
-
+            
             // Jump effects
             if (_player.JumpingThisFrame) {
-                _anim.SetTrigger(JumpKey);
                 _anim.ResetTrigger(GroundedKey);
                 _jumpParticles.Play();
 
@@ -56,6 +62,8 @@ namespace TarodevController {
                     SetColor(_jumpParticles);
                     SetColor(_launchParticles);
                 }
+                
+                _anim.SetTrigger(JumpKey);
             }
 
             // Play landing effects and begin ground movement effects
@@ -99,6 +107,7 @@ namespace TarodevController {
         private static readonly int GroundedKey = Animator.StringToHash("Grounded");
         private static readonly int IdleSpeedKey = Animator.StringToHash("IdleSpeed");
         private static readonly int JumpKey = Animator.StringToHash("Jump");
+        private static readonly int KickKey = Animator.StringToHash("Kick");
 
         #endregion
     }

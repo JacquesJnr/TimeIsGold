@@ -43,6 +43,8 @@ namespace TarodevController {
             CalculateJumpApex(); // Affects fall speed, so calculate before gravity
             CalculateGravity(); // Vertical movement
             CalculateJump(); // Possibly overrides vertical
+            
+            Kick(); // Kick
 
             MoveCharacter(); // Actually perform the axis movement
         }
@@ -89,10 +91,15 @@ namespace TarodevController {
             else if (!_colDown && groundedCheck) {
                 _coyoteUsable = true; // Only trigger when first touching
                 LandingThisFrame = true;
-                extraJumpCount = 1;
             }
 
             _colDown = groundedCheck;
+
+            if (_colDown && extraJumpCount < 1)
+            {
+                LandingThisFrame = true;
+                extraJumpCount = 1;
+            }
 
             // The rest
             _colUp = RunDetection(_raysUp);
@@ -209,6 +216,7 @@ namespace TarodevController {
         #region Jump
 
         [Header("JUMPING")] [SerializeField] private float _jumpHeight = 30;
+        [SerializeField] private float _doubleJumpHeight = 30;
         [SerializeField] private float _jumpApexThreshold = 10f;
         [SerializeField] private float _coyoteTimeThreshold = 0.1f;
         [SerializeField] private float _jumpBuffer = 0.1f;
@@ -243,24 +251,16 @@ namespace TarodevController {
                 _timeLeftGrounded = float.MinValue;
                 JumpingThisFrame = true;
             }
+            //Double Jump
+            else if (Input.JumpDown && CanDoubleJump) {
+                JumpingThisFrame = true;
+                extraJumpCount--;
+                _currentVerticalSpeed = _doubleJumpHeight;
+            }
             else {
                 JumpingThisFrame = false;
             }
             
-            //Double Jump
-            if (Input.JumpDown && CanDoubleJump)
-            {
-                extraJumpCount--;
-                _currentVerticalSpeed = _jumpHeight;
-                _endedJumpEarly = false;
-                _coyoteUsable = false;
-                _timeLeftGrounded = float.MinValue;
-                JumpingThisFrame = true;
-            }
-            else
-            {
-                JumpingThisFrame = false;
-            }
 
             // End the jump early if button released
             if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0) {
@@ -324,12 +324,22 @@ namespace TarodevController {
 
         [Header("KICK")] 
         [SerializeField] private float kickBuffer;
-        private float _lastTimeKicked;
+        private float _lastTimeKicked = 0;
 
-        // private void Kick()
-        // {
-        //     if(Input.Kick && )
-        // }
+        private bool CanKickAgain =>  Time.time > (_lastTimeKicked + kickBuffer);
+
+        private void Kick()
+        {
+            if (Input.Kick && CanKickAgain)
+            {
+                _lastTimeKicked = Time.time;
+                KickingThisFrame = true;
+            }
+            else
+            {
+                KickingThisFrame = false;
+            }
+        }
 
         #endregion
     }

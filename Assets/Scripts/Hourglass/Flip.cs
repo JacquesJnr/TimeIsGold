@@ -11,23 +11,20 @@ public class Flip : MonoBehaviour
         Kick.Flip += OnKick;
     }
 
-    public async void OnKick()
+    private Vector3 NewRotation(Quaternion newRotation)
     {
-        float from = gameObject.transform.rotation.z;
-        float to = (gameObject.transform.rotation.z - 180);
-        float timeElapsed = 0;  
+        var flipIt = newRotation.eulerAngles;
+        flipIt.z -= 180f;
 
-        float lerpValue;
-        while (timeElapsed < animationTime)
-        {
-            lerpValue = Mathf.Lerp(from, to, timeElapsed / animationTime);
-            timeElapsed += Time.deltaTime;
-            
-            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, lerpValue));
-            
-            await Task.Yield();
-        }
-        
-        gameObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, to));
+        return flipIt;
+    }
+
+    public void OnKick()
+    {
+        LeanTween.cancel(gameObject);
+        var zRotation = gameObject.transform.rotation;
+        var endPos = NewRotation(zRotation);
+        LeanTween.rotate(gameObject,endPos, animationTime).
+            setEase(LeanTweenType.easeOutElastic);
     }
 }

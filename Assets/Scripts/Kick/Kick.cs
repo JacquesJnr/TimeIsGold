@@ -10,9 +10,6 @@ public class Kick : MonoBehaviour
     }
     private IPlayerController _player;
 
-    [Header("BUTTONS")][SerializeField]
-    private SpriteRenderer flipTrigger;
-
     public static event Action Flip;
 
     void Awake() => _player = GetComponentInParent<IPlayerController>();
@@ -26,19 +23,18 @@ public class Kick : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CheckForKicks(flipTrigger);
+        CheckForKicks();
     }
 
-    public void CheckForKicks(SpriteRenderer obj)
+    public void CheckForKicks()
     {
-        if (!_player.KickingThisFrame)
+        if (!KickTrigger.WithinKickRange)
         {
             return;
         }
-        
-        if (box.bounds.Intersects(obj.bounds))
+
+        if (_player.Input.Kick)
         {
-            Debug.Log("Kicked " + obj.gameObject.name);
             Flip!.Invoke();
         }
     }

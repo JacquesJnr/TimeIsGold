@@ -53,6 +53,10 @@ namespace TarodevController {
         #region Gather Input
 
         private void GatherInput() {
+            
+            //Don't move when in a menu
+            if(StateMachine._gameState == GameStates.Menu){return;}
+            
             Input = new FrameInput {
                 JumpDown = UnityEngine.Input.GetButtonDown("Jump"),
                 JumpUp = UnityEngine.Input.GetButtonUp("Jump"),

@@ -6,8 +6,8 @@ using UnityEngine.PlayerLoop;
 
 public enum GameStates
 {
-    Alive,
-    Dead
+    Playing,
+    Menu
 }
 
 public enum CameraStates
@@ -18,9 +18,6 @@ public enum CameraStates
 
 public class StateMachine : MonoBehaviour
 {
-    
-    [SerializeField] private int currentLevel = 1;
-    
     [Header("PLAYER")]
     public static GameStates _gameState;
     [SerializeField] private GameStates gameState;
@@ -48,11 +45,17 @@ public class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (_gameState == GameStates.Dead)
+        // Player Death
+        if (_gameState == GameStates.Menu)
         {
             //Time.timeScale = 0;
             SetCameraState(CameraStates.Waiting);
         }
-        
+
+        // Manual Override
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SetCameraState(CameraStates.Active);
+        }
     }
 }

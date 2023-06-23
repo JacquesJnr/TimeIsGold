@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class Die : MonoBehaviour
+public class DeathZone : MonoBehaviour
 {
     public bool inDeathZone;
     public LayerMask whatIsPlayer;
@@ -10,11 +10,11 @@ public class Die : MonoBehaviour
     {
         inDeathZone = Physics2D.OverlapBox(transform.position, GetComponent<BoxCollider2D>().size, 0f,whatIsPlayer);
 
-        var Alive = GameStates.Alive;
+        var Alive = StateMachine._gameState == GameStates.Playing;
         
-        if (inDeathZone && StateMachine._gameState == Alive)
+        if (inDeathZone && Alive)
         { 
-            StateMachine.SetPlayerState(GameStates.Dead);
+            StateMachine.SetPlayerState(GameStates.Menu);
         }
     }
 

@@ -35,13 +35,12 @@ public class SpawnPlatforms : MonoBehaviour
         newPlatform.name = ("P" + transform.childCount);
         
         spawned.Add(newPlatform);
-        Vector3 newPlatformPos = new Vector3(-newPlatform.transform.position.x, lastPos, 0);
-        
-        
     }
 
     private void Update()
     {
+        if(StateMachine._cameraState == CameraStates.Waiting){return;}
+        
         if (spawnTimer < spawnInterval)
         {
             spawnTimer += Time.deltaTime;

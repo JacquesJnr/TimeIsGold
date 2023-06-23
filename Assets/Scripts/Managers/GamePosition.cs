@@ -7,6 +7,8 @@ public class GamePosition : MonoBehaviour
 {
     [Header("HEIGHT")]
     [SerializeField] private string currentHeight = "0.00";
+    private Vector2 pos;
+    public static float CurrentPlayerHeight { get; set; }
     
     [Header("LEVEL")]
     [SerializeField] private int currentLevel = 1;
@@ -18,15 +20,21 @@ public class GamePosition : MonoBehaviour
     [Header("EXTENT OFFSET")]
     [SerializeField] float playerExtents;
     
-    
-    private Vector2 pos;
-    public static float CurrentHeight { get; set; }
-
     private void Update()
     {
+        #region Height
+
         pos = player.position;
         var relativePosition = (pos.y - playerExtents)  - floor.position.y;
         currentHeight = relativePosition.ToString("F2");
-        CurrentHeight = relativePosition;
+        CurrentPlayerHeight = relativePosition;
+
+        #endregion
+        
+    }
+
+    private void IncreaseLevel()
+    {
+        currentLevel++;
     }
 }

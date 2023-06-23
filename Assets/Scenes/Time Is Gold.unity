@@ -197,7 +197,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0082799ea4ddae649ab76f50d21197b5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.74509805, g: 0.5137255, b: 0.1254902, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -1935,8 +1935,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c2e81fecb82514fa87a099f265750e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 1
   cam: {fileID: 963194225}
+  cameraSpeed: 1
+  maxSpeed: 10
+  speedIncrease: 1
+  distanceIncrease: 50
+  switchHeight: 10
 --- !u!1 &1102055394
 GameObject:
   m_ObjectHideFlags: 0
@@ -22088,7 +22092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentScore: 
-  passiveScore: 25
+  passiveScore: 12
   levelModifier: 1
   kickBonus: 100
 --- !u!1001 &1805880528
@@ -22523,7 +22527,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.745283, g: 0.51555496, b: 0.12421376, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -22857,7 +22861,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0082799ea4ddae649ab76f50d21197b5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.74509805, g: 0.5137255, b: 0.1254902, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -22961,7 +22965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &5124300411126074393
 GameObject:
   m_ObjectHideFlags: 0
@@ -23129,7 +23133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6432609860087564045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23159,7 +23163,7 @@ MonoBehaviour:
   _minFallSpeed: 20
   _maxFallSpeed: 60
   _jumpHeight: 20
-  _doubleJumpHeight: 28
+  _doubleJumpHeight: 22
   _jumpApexThreshold: 10
   _coyoteTimeThreshold: 0.1
   _jumpBuffer: 0.1

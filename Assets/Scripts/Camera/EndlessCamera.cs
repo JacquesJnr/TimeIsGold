@@ -7,10 +7,10 @@ public class EndlessCamera : MonoBehaviour
 { 
     [Header("CAMERA OBJECT")]
     [SerializeField] private GameObject cam;
-    
-    [Header("CAMERA SPEED")]
-    [SerializeField] private float cameraSpeed;
-    
+
+    [Header("CAMERA SPEED")] [SerializeField]
+    private float cameraSpeed;
+
     [Header("MAX SPEED - Increase at your own risk")]
     [SerializeField] float maxSpeed = 10f;
     

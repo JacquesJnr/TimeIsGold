@@ -3,9 +3,7 @@ using Random = UnityEngine.Random;
 
 namespace TarodevController {
     /// <summary>
-    /// This is a pretty filthy script. I was just arbitrarily adding to it as I went.
-    /// You won't find any programming prowess here.
-    /// This is a supplementary script to help with effects and animation. Basically a juice factory.
+    /// Basically a juice factory.
     /// </summary>
     
     public class PlayerAnimator : MonoBehaviour {
@@ -28,7 +26,7 @@ namespace TarodevController {
         void Awake() => _player = GetComponentInParent<IPlayerController>();
 
         void Update() {
-            if (_player == null) return;
+            if (StateMachine._gameState == GameStates.Menu) return;
 
             // Kick
             if (_player.KickingThisFrame)

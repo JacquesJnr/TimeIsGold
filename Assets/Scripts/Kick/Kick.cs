@@ -11,6 +11,9 @@ public class Kick : MonoBehaviour
     private IPlayerController _player;
 
     public static event Action Flip;
+    
+    [SerializeField] private int kickCount;
+    public static int KickCount;
 
     void Awake() => _player = GetComponentInParent<IPlayerController>();
     
@@ -24,6 +27,7 @@ public class Kick : MonoBehaviour
     private void FixedUpdate()
     {
         CheckForKicks();
+        kickCount = KickCount;
     }
 
     public void CheckForKicks()
@@ -35,6 +39,7 @@ public class Kick : MonoBehaviour
 
         if (_player.Input.Kick)
         {
+            KickCount++;
             Flip!.Invoke();
         }
     }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public enum GameStates
 {
@@ -16,21 +12,34 @@ public enum CameraStates
     Active
 }
 
+public enum HourglassStates
+{
+    Full,
+    Draining,
+    Empty
+}
+
 public class StateMachine : MonoBehaviour
 {
-    [Header("PLAYER")]
     public static GameStates _gameState;
+    [Header("PLAYER")]
     [SerializeField] private GameStates gameState;
     public GameObject player;
     
-    [Header("CAMERA")]
     public static CameraStates _cameraState;
+    [Header("CAMERA")]
     [SerializeField] private CameraStates cameraState;
+    
+    public static HourglassStates _hourglassState;
+    [Header("HOURGLASS")] 
+    [SerializeField] private HourglassStates hourglassState;
 
     private void Start()
     {
         _gameState = gameState;
         _cameraState = cameraState;
+        _hourglassState = hourglassState;
+
     }
     
     public static void SetPlayerState(GameStates newState)
@@ -43,13 +52,33 @@ public class StateMachine : MonoBehaviour
         _cameraState = newState;
     }
 
+    public static void SetHourglassState(HourglassStates newState)
+    {
+        _hourglassState = newState;
+    }
+
+    private void StopGameState()
+    {
+        //Time.timeScale = 0;
+        SetCameraState(CameraStates.Waiting);
+        SetHourglassState(HourglassStates.Full);
+    }
+
+    private bool HourglassIsEmpty()
+    {
+        return _hourglassState == HourglassStates.Empty;
+    }
+
+    private bool InMenu()
+    {
+        return _gameState == GameStates.Menu;
+    }
+
     private void Update()
     {
-        // Player Death
-        if (_gameState == GameStates.Menu)
+        if (HourglassIsEmpty() || InMenu())
         {
-            //Time.timeScale = 0;
-            SetCameraState(CameraStates.Waiting);
+            StopGameState();
         }
 
         // Manual Override
@@ -57,5 +86,9 @@ public class StateMachine : MonoBehaviour
         {
             SetCameraState(CameraStates.Active);
         }
+
+        hourglassState = _hourglassState;
+        cameraState = _cameraState;
+        gameState = _gameState;
     }
 }

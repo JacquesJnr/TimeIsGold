@@ -8,7 +8,8 @@ public class GameScore : MonoBehaviour
     
     [Header("SCORE MODIFIERS")] 
     [SerializeField] private int passiveScore = 25;
-    [SerializeField] private int levelModifier = 1;
+
+    [SerializeField] private int levelModifier;
 
     [Header("KICK BONUS")] [SerializeField]
     private int kickBonus = 100;
@@ -20,12 +21,13 @@ public class GameScore : MonoBehaviour
     private void OnEnable()
     {
         Kick.Flip += OnKick;
+        Level.Change += OnLevelChange;
     }
 
     private void Update()
     {
         timer += Time.deltaTime;
-        
+
         // Increase Score Every Second Passively
         if (timer >= delay) {
             timer = 0f;
@@ -37,6 +39,11 @@ public class GameScore : MonoBehaviour
     private void OnKick()
     {
         Score += kickBonus;
+    }
+
+    private void OnLevelChange(int level)
+    {
+        levelModifier = level;
     }
 
 }

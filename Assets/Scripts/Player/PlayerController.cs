@@ -12,6 +12,7 @@ namespace TarodevController {
     /// if there's enough interest. You can play and compete for best times here: https://tarodev.itch.io/
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
+    
     public class PlayerController : MonoBehaviour, IPlayerController {
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
@@ -24,6 +25,7 @@ namespace TarodevController {
 
         private Vector3 _lastPosition;
         private float _currentHorizontalSpeed, _currentVerticalSpeed;
+        private static float _currentMaxJumpHeight;
 
         // This is horrible, but for some reason colliders are not fully established when update starts...
         private bool _active;
@@ -35,6 +37,7 @@ namespace TarodevController {
             // Calculate velocity
             Velocity = (transform.position - _lastPosition) / Time.deltaTime;
             _lastPosition = transform.position;
+            _currentMaxJumpHeight = _jumpApexThreshold;
 
             GatherInput();
             RunCollisionChecks();
@@ -230,6 +233,13 @@ namespace TarodevController {
         private bool _endedJumpEarly = true;
         private float _apexPoint; // Becomes 1 at the apex of a jump
         private float _lastJumpPressed;
+
+        public static float MaxJumpHeight
+        {
+            get { return _currentMaxJumpHeight; }
+        }
+
+
         private bool CanUseCoyote => _coyoteUsable && !_colDown && _timeLeftGrounded + _coyoteTimeThreshold > Time.time;
         private bool HasBufferedJump => _colDown && _lastJumpPressed + _jumpBuffer > Time.time;
 

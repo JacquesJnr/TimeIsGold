@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Hourglass : MonoBehaviour
 {
@@ -73,6 +74,7 @@ public class Hourglass : MonoBehaviour
       StopAllCoroutines();
       StartCoroutine(Flow(currentBottom, full));
       StartCoroutine(Flow(currentTop, empty));
+      Move();
    }
    
    public void EvaluateSprite(SpriteRenderer sp, Vector2 targetPos, Sprite newSprite)
@@ -102,17 +104,20 @@ public class Hourglass : MonoBehaviour
       top.size = empty;
    }
 
+   public void Move()
+   {
+      float y= Random.Range(-12, 12);
+      Vector3 newPosition = new Vector3(0, y, 10);
+      LeanTweenType ease = LeanTweenType.easeInOutSine;
+
+      gameObject.LeanMoveLocal(newPosition, 1f).setEase(ease);
+   }
+
    private void Update()
    {
       if (StateMachine._hourglassState == HourglassStates.Full)
       {
          ResetHourglass();
-      }
-
-      // Manual Override
-      if (Input.GetKeyDown(KeyCode.Alpha7))
-      {
-         OnKick();
       }
    }
 }

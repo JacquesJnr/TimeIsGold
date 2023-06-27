@@ -46,7 +46,7 @@ public class Kick : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (!Application.isPlaying)
+        if (Application.isEditor)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(transform.position + kickBounds.center,kickBounds.size);

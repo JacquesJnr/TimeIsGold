@@ -155,7 +155,7 @@ namespace TarodevController {
             if (!Application.isPlaying) return;
 
             // Draw the future position. Handy for visualizing gravity
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.white;
             var move = new Vector3(_currentHorizontalSpeed, _currentVerticalSpeed) * Time.deltaTime;
             Gizmos.DrawWireCube(transform.position + move, _characterBounds.size);
         }

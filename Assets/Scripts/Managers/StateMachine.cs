@@ -39,6 +39,7 @@ public class StateMachine : MonoBehaviour
         _gameState = gameState;
         _cameraState = cameraState;
         _hourglassState = hourglassState;
+        Kick.Flip += OnKick;
 
     }
     
@@ -61,6 +62,7 @@ public class StateMachine : MonoBehaviour
     {
         //Time.timeScale = 0;
         SetCameraState(CameraStates.Waiting);
+        SetPlayerState(GameStates.Menu);
         SetHourglassState(HourglassStates.Full);
     }
 
@@ -74,13 +76,21 @@ public class StateMachine : MonoBehaviour
         return _gameState == GameStates.Menu;
     }
 
+    public void OnKick()
+    {
+        if (_cameraState == CameraStates.Waiting)
+        {
+            SetCameraState(CameraStates.Active);
+        }
+    }
+
     private void Update()
     {
         if (HourglassIsEmpty() || InMenu())
         {
             StopGameState();
         }
-
+        
         // Manual Override
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {

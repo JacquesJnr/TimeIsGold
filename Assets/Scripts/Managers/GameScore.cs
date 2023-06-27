@@ -26,6 +26,10 @@ public class GameScore : MonoBehaviour
 
     private void Update()
     {
+        var hourglassIsDraining = StateMachine._hourglassState != HourglassStates.Draining;
+        
+        if(!hourglassIsDraining){return;}
+        
         timer += Time.deltaTime;
 
         // Increase Score Every Second Passively

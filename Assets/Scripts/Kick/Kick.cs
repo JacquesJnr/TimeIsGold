@@ -37,7 +37,7 @@ public class Kick : MonoBehaviour
             return;
         }
 
-        if (_player.Input.Kick)
+        if (_player.KickingThisFrame)
         {
             KickCount++;
             Flip!.Invoke();

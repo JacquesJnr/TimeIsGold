@@ -50,8 +50,12 @@ namespace TarodevController {
             Kick(); // Kick
 
             MoveCharacter(); // Actually perform the axis movement
-        }
 
+            if (StateMachine._gameState == GameStates.Menu)
+            {
+                OnDisable();
+            }
+        }
 
         #region Gather Input
 
@@ -267,14 +271,13 @@ namespace TarodevController {
             }
             //Double Jump
             else if (Input.JumpDown && CanDoubleJump) {
-                JumpingThisFrame = true;
+                //JumpingThisFrame = true;
                 extraJumpCount--;
                 _currentVerticalSpeed = _doubleJumpHeight;
             }
             else {
                 JumpingThisFrame = false;
             }
-            
 
             // End the jump early if button released
             if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0) {
@@ -356,5 +359,10 @@ namespace TarodevController {
         }
 
         #endregion
+
+        private void OnDisable()
+        {
+            Destroy(gameObject);
+        }
     }
 }

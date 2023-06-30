@@ -18,8 +18,8 @@ public class SpawnPlatforms : MonoBehaviour
     [SerializeField] private int platformsPerCycle = 5;
 
     public Transform cutOffHeight;
-    private List<GameObject> spawned = new List<GameObject>();
-    [SerializeField] private List<GameObject> levelPlatforms = new List<GameObject>();
+    private static List<GameObject> spawned = new List<GameObject>();
+    [SerializeField] private List<GameObject> platformPool = new List<GameObject>();
 
     [SerializeField] private GameObject initialPlatform;
     private GameObject previousPlatform { get; set; }
@@ -82,6 +82,11 @@ public class SpawnPlatforms : MonoBehaviour
         // Destroy Platforms Off-screen
         foreach (Transform p in transform)
         {
+            if (p.gameObject.CompareTag("Initial Platform"))
+            {
+                return;
+            }
+
             if (p.position.y < cutOffHeight.position.y)
             {
                 //Debug.Log("Popping: " + p.name);
@@ -89,11 +94,22 @@ public class SpawnPlatforms : MonoBehaviour
             }
         }
     }
+
+    public static void DestroyAllPlatforms()
+    {
+        if (spawned.Count < 1) { return;}
+
+        foreach (var platform in spawned)
+        {
+            Destroy(platform);
+        }
+        spawned.Clear();
+    }
     
     public void OnLevelChange(int level)
     {
-        levelPlatforms.Clear();
-        levelPlatforms = SetLevelPlatforms(level);
+        platformPool.Clear();
+        platformPool = SetLevelPlatforms(level);
     }
 
     public List<GameObject> SetLevelPlatforms(int level)
@@ -107,7 +123,6 @@ public class SpawnPlatforms : MonoBehaviour
                 plastformLengths.Add(PlatformType("large"));
                 break;
             case 2:
-                plastformLengths.Add(PlatformType("large"));
                 plastformLengths.Add(PlatformType("medium"));
                 break;
             case 3:
@@ -149,7 +164,11 @@ public class SpawnPlatforms : MonoBehaviour
     
     private void Update()
     {
-        if(StateMachine._cameraState == CameraStates.Waiting){return;}
+        if (StateMachine._cameraState == CameraStates.Waiting)
+        {
+            //DestroyAll(); 
+            return;
+        }
 
         spawnTimer += Time.deltaTime;
 
@@ -158,7 +177,7 @@ public class SpawnPlatforms : MonoBehaviour
             spawnTimer = 0;
             for (int i = 0; i < platformsPerCycle; i++)
             {
-                NewPlatform(SelectRandomPlatform(levelPlatforms));
+                NewPlatform(SelectRandomPlatform(platformPool));
             }
         }
         

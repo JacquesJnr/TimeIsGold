@@ -9,6 +9,7 @@ public class Flip : MonoBehaviour
     private void OnEnable()
     {
         Kick.Flip += OnKick;
+        StateMachine.OnGameEnd += Reset;
     }
 
     private Vector3 NewRotation(Quaternion newRotation)
@@ -17,6 +18,11 @@ public class Flip : MonoBehaviour
         flipIt.z -= 180f;
 
         return flipIt;
+    }
+
+    private void Reset()
+    {
+        gameObject.transform.rotation = Quaternion.Euler(0,0,0);
     }
 
     public void OnKick()

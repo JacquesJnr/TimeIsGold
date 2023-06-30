@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GamePosition : MonoBehaviour
@@ -11,16 +8,29 @@ public class GamePosition : MonoBehaviour
     public static float CurrentPlayerHeight { get; set; }
     
     [Header("TRANSFORMS")]
-    [SerializeField] private Transform player;
+    private static Transform Player;
     [SerializeField] private Transform floor;
-    
+
     [Header("EXTENT OFFSET")]
     [SerializeField] float playerExtents;
     
+    private bool NoPlayerAssigned()
+    {
+        return Player == null;
+    }
+
+    public static void SetPlayer(GameObject newPlayer)
+    {
+        Player = newPlayer.transform;
+    }
+    
     private void Update()
     {
-        pos = player.position;
-        var relativePosition = (pos.y - playerExtents)  - floor.position.y;
+        if(StateMachine._gameState == GameStates.Menu){return;}
+        if (NoPlayerAssigned()) { return;}
+
+        pos = Player.position;
+        var relativePosition = (pos.y - playerExtents) - floor.position.y;
         currentHeight = relativePosition.ToString("F2");
         CurrentPlayerHeight = relativePosition;
     }

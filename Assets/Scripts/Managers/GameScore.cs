@@ -18,15 +18,24 @@ public class GameScore : MonoBehaviour
     private float timer = 0f;
     private float delay = 1.0f;
 
+    private UIScore uiScore;
+
     private void OnEnable()
     {
+        uiScore = FindObjectOfType<UIScore>();
         Kick.Flip += OnKick;
         Level.Change += OnLevelChange;
     }
 
     private void Update()
     {
-        var hourglassIsDraining = StateMachine._hourglassState != HourglassStates.Draining;
+        var hourglassIsDraining = StateMachine._hourglassState == HourglassStates.Draining;
+        
+        // Manually increase score for testing
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            OnKick();
+        }
         
         if(!hourglassIsDraining){return;}
         
@@ -43,7 +52,11 @@ public class GameScore : MonoBehaviour
     private void OnKick()
     {
         Score += kickBonus;
+
+        Vector3 UpScaled = new Vector2(1.2f, 1.2f);
+        uiScore.scoreObject.LeanScale(UpScaled, 0.5f).setLoopPingPong(1);
     }
+
 
     private void OnLevelChange(int level)
     {

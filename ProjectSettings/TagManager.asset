@@ -7,6 +7,7 @@ TagManager:
   - DeathZone
   - player
   - Camera Trigger
+  - Initial Platform
   layers:
   - Default
   - TransparentFX

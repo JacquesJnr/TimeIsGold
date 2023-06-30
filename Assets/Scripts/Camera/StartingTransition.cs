@@ -4,9 +4,8 @@ using UnityEngine.UI;
 
 public class StartingTransition : MonoBehaviour
 {
-    [SerializeField] private GameObject startCam;
-    [SerializeField] private GameObject gameCam;
     [SerializeField] private CanvasGroup controlls;
+    [SerializeField] private GameObject hourglass;
 
     private void OnEnable()
     {
@@ -21,9 +20,6 @@ public class StartingTransition : MonoBehaviour
 
     private void Update()
     {
-        if (StateMachine._cameraState == CameraStates.Active && Kick.KickCount == 1)
-        {
-            startCam.SetActive(false);
-        }
+       
     }
 }

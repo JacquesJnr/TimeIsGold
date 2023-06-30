@@ -21,6 +21,11 @@ public class Hourglass : MonoBehaviour
    public float emptyLevel;
    private Vector2 full;
    private Vector2 empty;
+   [SerializeField] private bool moving;
+
+   [SerializeField] private float sineSpeed;
+   [SerializeField] private float sineMag;
+   
 
    [Header("ANIMATION TIME")] 
    [SerializeField] private float animationTime;
@@ -37,7 +42,7 @@ public class Hourglass : MonoBehaviour
    private void OnEnable()
    {
       Kick.Flip += OnKick;
-      
+
       empty = new Vector2(1, emptyLevel);
       full = new Vector2(1, fillLevel);
       
@@ -59,7 +64,7 @@ public class Hourglass : MonoBehaviour
       SpriteRenderer currentBottom = GetOrientation() >= 0 ? bottom : top; 
       
       // Initial kick
-      if (Kick.KickCount == 1)
+      if (Kick.KickCount <= 1)
       {
          currentTop = bottom;
          currentBottom = top;
@@ -74,7 +79,6 @@ public class Hourglass : MonoBehaviour
       StopAllCoroutines();
       StartCoroutine(Flow(currentBottom, full));
       StartCoroutine(Flow(currentTop, empty));
-      Move();
    }
    
    public void EvaluateSprite(SpriteRenderer sp, Vector2 targetPos, Sprite newSprite)
@@ -100,24 +104,43 @@ public class Hourglass : MonoBehaviour
 
    public void ResetHourglass()
    {
-      bottom.size = full;
+      EvaluateSprite(top, topPos, topFill);
       top.size = empty;
+      EvaluateSprite(bottom, bottomPos, bottomFill);
+      bottom.size = full;
    }
 
    public void Move()
    {
-      float y= Random.Range(-12, 12);
-      Vector3 newPosition = new Vector3(0, y, 10);
-      LeanTweenType ease = LeanTweenType.easeInOutSine;
-
-      gameObject.LeanMoveLocal(newPosition, 1f).setEase(ease);
+      Vector3 newPosition = new Vector3(0, SineAmount(), 10);
+      transform.localPosition = newPosition;
    }
+
+   private float SineAmount()
+   {
+      return sineMag * MathF.Sin(Time.time * sineSpeed);
+   }
+
+   public void PingPongHourglass()
+   {
+      float magnitude = 0.5f;
+      float pingPong = magnitude * MathF.Sin(Time.time);
+
+      transform.localPosition = new Vector3(0, pingPong, 10);
+   }
+
 
    private void Update()
    {
       if (StateMachine._hourglassState == HourglassStates.Full)
       {
          ResetHourglass();
+         PingPongHourglass();
+      }
+
+      if (StateMachine._hourglassState == HourglassStates.Draining)
+      {
+         Move();
       }
    }
 }

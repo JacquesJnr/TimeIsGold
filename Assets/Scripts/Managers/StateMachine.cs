@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum GameStates
@@ -24,8 +25,7 @@ public class StateMachine : MonoBehaviour
     public static GameStates _gameState;
     [Header("PLAYER")]
     [SerializeField] private GameStates gameState;
-    public GameObject player;
-    
+
     public static CameraStates _cameraState;
     [Header("CAMERA")]
     [SerializeField] private CameraStates cameraState;
@@ -34,13 +34,14 @@ public class StateMachine : MonoBehaviour
     [Header("HOURGLASS")] 
     [SerializeField] private HourglassStates hourglassState;
 
+    public static event Action OnGameEnd;
+
     private void Start()
     {
         _gameState = gameState;
         _cameraState = cameraState;
         _hourglassState = hourglassState;
         Kick.Flip += OnKick;
-
     }
     
     public static void SetPlayerState(GameStates newState)
@@ -57,13 +58,13 @@ public class StateMachine : MonoBehaviour
     {
         _hourglassState = newState;
     }
-
+    
     private void StopGameState()
     {
         //Time.timeScale = 0;
         SetCameraState(CameraStates.Waiting);
-        SetPlayerState(GameStates.Menu);
         SetHourglassState(HourglassStates.Full);
+        OnGameEnd.Invoke();
     }
 
     private bool HourglassIsEmpty()
@@ -90,7 +91,7 @@ public class StateMachine : MonoBehaviour
         {
             StopGameState();
         }
-        
+
         // Manual Override
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {

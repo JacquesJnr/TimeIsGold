@@ -13,6 +13,8 @@ namespace TarodevController {
         [SerializeField] private ParticleSystem _jumpParticles, _launchParticles;
         [SerializeField] private ParticleSystem _moveParticles, _landParticles;
         [SerializeField] private AudioClip[] _footsteps;
+        [SerializeField] private AudioClip _kick;
+        [SerializeField] private AudioClip _jump;
         [SerializeField] private float _maxTilt = .1f;
         [SerializeField] private float _tiltSpeed = 1;
         [SerializeField, Range(1f, 3f)] private float _maxIdleSpeed = 2;
@@ -32,6 +34,7 @@ namespace TarodevController {
             if (_player.KickingThisFrame)
             {
                 _anim.SetTrigger(KickKey);
+                _source.PlayOneShot(_kick);
             }
             
             // Flip the sprite
@@ -56,13 +59,19 @@ namespace TarodevController {
             if (_player.JumpingThisFrame) {
                 _anim.ResetTrigger(GroundedKey);
                 _jumpParticles.Play();
+                _source.PlayOneShot(_jump);
 
                 // Only play particles when grounded (avoid coyote)
                 if (_player.Grounded) {
                     SetColor(_jumpParticles);
                     SetColor(_launchParticles);
+                    _source.pitch = 1;
                 }
-                
+
+                if (!_player.Grounded)
+                {
+                    _source.pitch = 2;
+                }
                 _anim.SetTrigger(JumpKey);
             }
 

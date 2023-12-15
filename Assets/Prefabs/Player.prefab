@@ -19917,6 +19917,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5d94063f45167b04ab62585e436da58c, type: 3}
   - {fileID: 8300000, guid: b5803c17557c59c40bf3a6d69cb46cb3, type: 3}
   - {fileID: 8300000, guid: 1876767bf7cbf284394dc3817af9593c, type: 3}
+  _kick: {fileID: 8300000, guid: 4534047d95424ae48ac4ac20e692a33f, type: 3}
+  _jump: {fileID: 8300000, guid: 21c7113618e301241b2687885f873025, type: 3}
   _maxTilt: 20
   _tiltSpeed: 100
   _maxIdleSpeed: 2

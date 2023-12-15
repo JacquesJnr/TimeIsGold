@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class GameScore : MonoBehaviour
 {
+    [Header("HIGH SCORE")] 
+    [SerializeField] private string highScore;
+    public static Int32 HighScore;
+    
     [Header("CURRENT SCORE")] [SerializeField]
     private string currentScore;
     
@@ -45,8 +49,10 @@ public class GameScore : MonoBehaviour
         if (timer >= delay) {
             timer = 0f;
             Score += passiveScore * levelModifier;
+            SetHighScore();
         }
         currentScore = Score.ToString();
+        highScore = HighScore.ToString();
     }
     
     private void OnKick()
@@ -55,6 +61,14 @@ public class GameScore : MonoBehaviour
 
         Vector3 UpScaled = new Vector2(1.2f, 1.2f);
         uiScore.scoreObject.LeanScale(UpScaled, 0.5f).setLoopPingPong(1);
+    }
+
+    private void SetHighScore()
+    {
+        if (Score >= HighScore)
+        {
+            HighScore = Score;
+        }
     }
 
 

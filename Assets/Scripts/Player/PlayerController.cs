@@ -271,7 +271,7 @@ namespace TarodevController {
             }
             //Double Jump
             else if (Input.JumpDown && CanDoubleJump) {
-                //JumpingThisFrame = true;
+                JumpingThisFrame = true;
                 extraJumpCount--;
                 _currentVerticalSpeed = _doubleJumpHeight;
             }

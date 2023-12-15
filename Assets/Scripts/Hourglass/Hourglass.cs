@@ -80,7 +80,7 @@ public class Hourglass : MonoBehaviour
       StartCoroutine(Flow(currentBottom, full));
       StartCoroutine(Flow(currentTop, empty));
    }
-   
+
    public void EvaluateSprite(SpriteRenderer sp, Vector2 targetPos, Sprite newSprite)
    {
       sp.transform.localPosition = targetPos;

@@ -34,5 +34,15 @@ public class UIScore : MonoBehaviour
     private void Update()
     {
         DisplayScoreOnUI();
+
+        switch (StateMachine._hourglassState)
+        {
+            case HourglassStates.Draining:
+                lerpSpeed = 1;
+                break;
+            case HourglassStates.Full:
+                lerpSpeed = 2;
+                break;
+        }
     }
 }

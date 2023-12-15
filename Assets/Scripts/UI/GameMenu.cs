@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   [SerializeField] private CanvasGroup credits;
+   [SerializeField] private float fadeTime;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   public void ShowCredits()
+   {
+      credits.LeanAlpha(1, fadeTime).setOnComplete(() => credits.blocksRaycasts = true);
+   }
+   
+   public void HideCredits()
+   {
+      credits.LeanAlpha(0, fadeTime).setOnComplete(() => credits.blocksRaycasts = false);
+   }
+
+   public void StartGame()
+   {
+      SceneManager.LoadScene("Time Is Gold");
+   }
 }
